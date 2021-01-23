@@ -37,7 +37,8 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: yg397/social-network-microservices
+        image: local/social-network-microservices:v1
+        imagePullPolicy: Never
         command: ["UserService"]
         volumeMounts:
           - mountPath: /social-network-microservices/config/jaeger-config.yml

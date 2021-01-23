@@ -37,7 +37,8 @@ spec:
     spec:
       containers:
       - name: post-storage-service
-        image: yg397/social-network-microservices
+        image: local/social-network-microservices:v1
+        imagePullPolicy: Never
         command: ["PostStorageService"]
         ports: 
         - containerPort: 9090
