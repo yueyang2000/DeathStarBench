@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
       - name: text-service
-        image: image: local/social-network-microservices:v1
+        image: local/social-network-microservices:v1
         imagePullPolicy: Never
         command: ["TextService"]
       restartPolicy: Always
