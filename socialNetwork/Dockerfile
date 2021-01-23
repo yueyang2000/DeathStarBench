@@ -1,3 +1,4 @@
+# local/social-network-microservices
 FROM yg397/thrift-microservice-deps:xenial
 
 ARG NUM_CPUS=1

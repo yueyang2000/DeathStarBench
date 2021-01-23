@@ -57,21 +57,21 @@ spec:
       volumes:
       - name: lua-scripts
         hostPath: 
-          path: /root/firm/benchmarks/1-social-network/nginx-web-server/lua-scripts-k8s
+          path: /home/yueyang/DeathStarBench/socialNetwork/nginx-web-server/lua-scripts-k8s
           type: Directory
       - name: pages
         hostPath: 
-          path: /root/firm/benchmarks/1-social-network/nginx-web-server/pages
+          path: /home/yueyang/DeathStarBench/socialNetwork/nginx-web-server/pages
           type: Directory
       - name: nginx-conf
         hostPath: 
-          path: /root/firm/benchmarks/1-social-network/nginx-web-server/conf/nginx-k8s.conf
+          path: /home/yueyang/DeathStarBench/socialNetwork/nginx-web-server/conf/nginx-k8s.conf
           type: File
       - name: jaeger-config-json
         hostPath: 
-          path: /root/firm/benchmarks/1-social-network/nginx-web-server/jaeger-config.json
+          path: /home/yueyang/DeathStarBench/socialNetwork/nginx-web-server/jaeger-config.json
           type: File
       - name: gen-lua
         hostPath: 
-          path: /root/firm/benchmarks/1-social-network/gen-lua
+          path: /home/yueyang/DeathStarBench/socialNetwork/gen-lua
           type: Directory
