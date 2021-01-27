@@ -201,6 +201,14 @@ You need at least 2 linux instances to run a k8s cluster. (one for master and on
    write-home-timeline-service-9c77cc4cb-d9zjc   1/1     Running   3          52m
    ```
 
+6. use command `kubectl get svc -n social-network` to check the port maps.
+
+   ```
+   nginx-thrift                   NodePort    10.99.196.255    <none>        8080:30283/TCP
+   ```
+   
+   `ssh -L <your-port>:127.0.0.1:30283 <server>` Then you can visit frontend at `localhost:<your-port>` 
+   
 ## Reference
 
 > [DeathStarBench](https://github.com/delimitrou/DeathStarBench)
