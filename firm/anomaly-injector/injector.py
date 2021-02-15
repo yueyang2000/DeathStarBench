@@ -94,7 +94,7 @@ def inject():
             os.system(command)
 
 def inject_cpu():
-    duration = 30
+    duration = 300
     pswd = ''
     if password != '':
         pswd = ':'+password
