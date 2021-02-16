@@ -1,6 +1,6 @@
-## FIRM Deployment
+# FIRM Deployment
 
-install dependencies
+### install dependencies
 
 ```bash
 sudo apt-get install libssl-dev
@@ -9,13 +9,17 @@ sudo apt-get install luarocks
 sudo luarocks install luasocket
 ```
 
-work load generation
+### work load generation
 
 ```bash
 ./wrk -D exp -t 3 -c 20 -R 500 -d 1m -L -s ./scripts/social-network/compose-post.lua http://10.99.196.255:8080/wrk2-api/post/compose
 ```
 
-without cpu anomaly
+### run anomaly injector 
+
+`python3 injector.py`
+
+- without cpu anomaly
 3 threads and 20 connections
   Thread calibration: mean lat.: 3506.452ms, rate sampling interval: 12427ms
   Thread calibration: mean lat.: 3595.895ms, rate sampling interval: 12730ms
@@ -33,76 +37,6 @@ without cpu anomaly
  99.999%   29.33s
 100.000%   29.33s
 
-  Detailed Percentile spectrum:
-       Value   Percentile   TotalCount 1/(1-Percentile)
-
-    6479.871     0.000000            1         1.00
-   10477.567     0.100000          719         1.11
-   13795.327     0.200000         1438         1.25
-   17055.743     0.300000         2157         1.43
-   20283.391     0.400000         2877         1.67
-   22577.151     0.500000         3597         2.00
-   23363.583     0.550000         3963         2.22
-   24084.479     0.600000         4315         2.50
-   24690.687     0.650000         4678         2.86
-   25165.823     0.700000         5031         3.33
-   25542.655     0.750000         5404         4.00
-   25722.879     0.775000         5587         4.44
-   25886.719     0.800000         5752         5.00
-   26066.943     0.825000         5935         5.71
-   26230.783     0.850000         6113         6.67
-   26427.391     0.875000         6294         8.00
-   26542.079     0.887500         6388         8.89
-   26656.767     0.900000         6469        10.00
-   26820.607     0.912500         6570        11.43
-   26984.447     0.925000         6655        13.33
-   27181.055     0.937500         6741        16.00
-   27312.127     0.943750         6786        17.78
-   27475.967     0.950000         6828        20.00
-   27688.959     0.956250         6874        22.86
-   27869.183     0.962500         6919        26.67
-   28049.407     0.968750         6965        32.00
-   28131.327     0.971875         6986        35.56
-   28246.015     0.975000         7012        40.00
-   28360.703     0.978125         7035        45.71
-   28442.623     0.981250         7053        53.33
-   28540.927     0.984375         7076        64.00
-   28590.079     0.985938         7086        71.11
-   28655.615     0.987500         7100        80.00
-   28721.151     0.989062         7113        91.43
-   28753.919     0.990625         7120       106.67
-   28819.455     0.992188         7132       128.00
-   28868.607     0.992969         7141       142.22
-   28884.991     0.993750         7145       160.00
-   28917.759     0.994531         7149       182.86
-   28983.295     0.995313         7156       213.33
-   28999.679     0.996094         7159       256.00
-   29016.063     0.996484         7162       284.44
-   29048.831     0.996875         7165       320.00
-   29081.599     0.997266         7169       365.71
-   29097.983     0.997656         7173       426.67
-   29097.983     0.998047         7173       512.00
-   29114.367     0.998242         7175       568.89
-   29130.751     0.998437         7176       640.00
-   29163.519     0.998633         7178       731.43
-   29196.287     0.998828         7181       853.33
-   29196.287     0.999023         7181      1024.00
-   29196.287     0.999121         7181      1137.78
-   29212.671     0.999219         7183      1280.00
-   29212.671     0.999316         7183      1462.86
-   29212.671     0.999414         7183      1706.67
-   29229.055     0.999512         7184      2048.00
-   29229.055     0.999561         7184      2275.56
-   29245.439     0.999609         7185      2560.00
-   29245.439     0.999658         7185      2925.71
-   29245.439     0.999707         7185      3413.33
-   29310.975     0.999756         7186      4096.00
-   29310.975     0.999780         7186      4551.11
-   29310.975     0.999805         7186      5120.00
-   29310.975     0.999829         7186      5851.43
-   29310.975     0.999854         7186      6826.67
-   29327.359     0.999878         7187      8192.00
-   29327.359     1.000000         7187          inf
 #[Mean    =    20381.570, StdDeviation   =     6167.817]
 #[Max     =    29310.976, Total count    =         7187]
 #[Buckets =           27, SubBuckets     =         2048]
@@ -111,3 +45,72 @@ without cpu anomaly
   Socket errors: connect 0, read 0, write 0, timeout 3
 Requests/sec:    145.10
 Transfer/sec:     30.46KB
+
+- with cpu anomaly
+  3 threads and 20 connections
+  Thread calibration: mean lat.: 4112.276ms, rate sampling interval: 14655ms
+  Thread calibration: mean lat.: 4119.843ms, rate sampling interval: 14589ms
+  Thread calibration: mean lat.: 4131.951ms, rate sampling interval: 14663ms
+  Thread Stats   Avg      Stdev     99%   +/- Stdev
+    Latency    27.07s    10.50s   42.93s    54.47%
+    Req/Sec    29.67      2.45    32.00     77.78%
+  Latency Distribution (HdrHistogram - Recorded Latency)
+ 50.000%   28.36s 
+ 75.000%   37.13s 
+ 90.000%   39.85s
+ 99.000%   42.93s
+ 99.900%   44.07s
+ 99.990%   44.92s
+ 99.999%   44.92s
+100.000%   44.92s
+
+#[Mean    =    27070.772, StdDeviation   =    10503.577]
+#[Max     =    44892.160, Total count    =         4535]
+#[Buckets =           27, SubBuckets     =         2048]
+----------------------------------------------------------
+  5503 requests in 1.00m, 1.13MB read
+  Socket errors: connect 0, read 0, write 0, timeout 81
+Requests/sec:     91.70
+Transfer/sec:     19.25KB
+
+### deploy firm
+try to deploy everything given by firm's document
+
+```
+export NAMESPACE='monitoring'
+kubectl create -f manifests/setup
+kubectl create namespace observability
+kubectl create -n observability -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing.io_jaegers_crd.yaml
+kubectl create -n observability -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/service_account.yaml
+kubectl create -n observability -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml
+kubectl create -n observability -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
+kubectl create -n observability -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
+kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/cluster_role.yaml
+kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/cluster_role_binding.yaml
+kubectl create -f manifests/
+```
+
+install docker-compose
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
+sudo chmod +x /usr/bin/docker-compose
+```
+
+deploy trace grapher
+```
+cd trace-grapher
+docker-compose run stack-builder
+# now a shell pops as root in the project directory of the stack-builder container
+cd deploy-trace-grapher
+make prepare-trace-grapher-namespace
+make install-components
+```
+
+ERROR shows up
+```
+Step 6/8 : RUN set -eux;     apk add --no-cache --virtual docker-compose-depts         gcc         libc-dev         libffi-dev         openssl-dev         py-pip         python-dev     ;     pip install docker-compose;
+
+ERROR: unable to select packages:
+  python-dev (no such package):
+    required by: docker-compose-depts-20210216.123934[python-dev]
+```
