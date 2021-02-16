@@ -106,11 +106,18 @@ make prepare-trace-grapher-namespace
 make install-components
 ```
 
-ERROR shows up
+An ERROR shows up
 ```
 Step 6/8 : RUN set -eux;     apk add --no-cache --virtual docker-compose-depts         gcc         libc-dev         libffi-dev         openssl-dev         py-pip         python-dev     ;     pip install docker-compose;
 
 ERROR: unable to select packages:
   python-dev (no such package):
     required by: docker-compose-depts-20210216.123934[python-dev]
+```
+
+change `python-dev` to `python3-dev`, problem solved...
+
+yet another ERROR shows up, which happens while `pip install docker-compose`
+```
+ERROR: Could not build wheels for cryptography which use PEP 517 and cannot be installed directly
 ```
