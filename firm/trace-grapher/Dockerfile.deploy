@@ -1,7 +1,7 @@
 # Docker image used for building the stack embedding binaries and libs required by
 # the deployment procedure for both local deployment and remote kubernetes Cluster
 
-FROM docker:dind
+FROM docker:19.03.13-dind
 
 ARG dockercompose_version=1.25.0
 ARG kubectl_version=v1.17.0
@@ -22,10 +22,9 @@ RUN set -eux; \
         libffi-dev \
         openssl-dev \
         py-pip \
-        python3-dev \
+        python-dev \
     ; \
-    curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; \
-    chmod +x /usr/local/bin/docker-compose;
+    pip install docker-compose;
 
 RUN set -eux; \
     curl -L "https://storage.googleapis.com/kubernetes-release/release/${kubectl_version}/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl; \

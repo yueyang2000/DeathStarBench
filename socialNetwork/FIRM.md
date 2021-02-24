@@ -90,11 +90,7 @@ kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operato
 kubectl create -f manifests/
 ```
 
-install docker-compose
-```
-sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
-sudo chmod +x /usr/bin/docker-compose
-```
+
 
 deploy trace grapher
 ```
@@ -115,9 +111,25 @@ ERROR: unable to select packages:
     required by: docker-compose-depts-20210216.123934[python-dev]
 ```
 
-change `python-dev` to `python3-dev`, problem solved...
+solved by: change `python-dev` to `python3-dev`
 
 yet another ERROR shows up, which happens while `pip install docker-compose`
 ```
 ERROR: Could not build wheels for cryptography which use PEP 517 and cannot be installed directly
 ```
+
+solved by: change the way of install docker-compose from `pip` to:
+
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
+sudo chmod +x /usr/bin/docker-compose
+```
+
+while executing `make install component` another error shows up which seems like a bug in the deployment file. I don't know how to deal with it.
+
+```
+unable to recognize "./overlays/docker-desktop": no matches for kind "KafkaConnect" in version "kafka.strimzi.io/v1beta1" 
+unable to recognize "./overlays/docker-desktop": no matches for kind "Gateway" in version "networking.istio.io/v1alpha3"  
+unable to recognize "./overlays/docker-desktop": no matches for kind "VirtualService" in version "networking.istio.io/v1alpha3"
+```
+
