@@ -23,8 +23,7 @@ RUN set -eux; \
         libc-dev \
         libffi-dev \
         openssl-dev \
-        py2-pip \
-        python2-dev \
+        python-dev \
     ; \
     pip install docker-compose;
 
