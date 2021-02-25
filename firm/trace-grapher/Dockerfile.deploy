@@ -23,10 +23,11 @@ RUN set -eux; \
         libc-dev \
         libffi-dev \
         openssl-dev \
-        py-pip \
         python-dev \
     ; \
-    python2 -m pip install -U pip; \
+    curl -O https://bootstrap.pypa.io/2.7/get-pip.py \
+    python get-pip.py \
+    python -m pip install --upgrade "pip < 21.0" \
     pip install docker-compose;
 
 RUN set -eux; \
