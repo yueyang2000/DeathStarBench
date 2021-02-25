@@ -7,7 +7,7 @@ ARG dockercompose_version=1.25.0
 ARG kubectl_version=v1.17.0
 ARG yq_version=3.3.0
 
-COPY repositories /etc/apk/repositories
+# COPY repositories /etc/apk/repositories
 
 RUN set -eux; \
     apk add --no-cache \
@@ -15,7 +15,9 @@ RUN set -eux; \
         gettext \
         jq \
         make \
-    ;
+    ; \
+    curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; \
+    chmod +x /usr/local/bin/docker-compose;
 
 RUN set -eux; \
     apk add --no-cache --virtual docker-compose-depts \
@@ -23,12 +25,7 @@ RUN set -eux; \
         libc-dev \
         libffi-dev \
         openssl-dev \
-        python-dev \
-    ; \
-    curl -O https://bootstrap.pypa.io/2.7/get-pip.py; \
-    python get-pip.py; \
-    python -m pip install --upgrade "pip < 21.0"; \
-    pip install docker-compose;
+        ;
 
 RUN set -eux; \
     curl -L "https://storage.googleapis.com/kubernetes-release/release/${kubectl_version}/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl; \
