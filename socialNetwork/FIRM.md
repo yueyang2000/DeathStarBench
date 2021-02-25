@@ -133,3 +133,8 @@ unable to recognize "./overlays/docker-desktop": no matches for kind "Gateway" i
 unable to recognize "./overlays/docker-desktop": no matches for kind "VirtualService" in version "networking.istio.io/v1alpha3"
 ```
 
+/etc/apk/repositories
+
+https://dl-cdn.alpinelinux.org/alpine/v3.13/main
+https://dl-cdn.alpinelinux.org/alpine/v3.13/community
+https://dl-cdn.alpinelinux.org/alpine/v3.4/main
