@@ -20,6 +20,8 @@ sudo luarocks install luasocket
 `python3 injector.py`
 
 - without cpu anomaly
+
+```
 3 threads and 20 connections
   Thread calibration: mean lat.: 3506.452ms, rate sampling interval: 12427ms
   Thread calibration: mean lat.: 3595.895ms, rate sampling interval: 12730ms
@@ -45,8 +47,11 @@ sudo luarocks install luasocket
   Socket errors: connect 0, read 0, write 0, timeout 3
 Requests/sec:    145.10
 Transfer/sec:     30.46KB
+```
 
 - with cpu anomaly
+
+```
   3 threads and 20 connections
   Thread calibration: mean lat.: 4112.276ms, rate sampling interval: 14655ms
   Thread calibration: mean lat.: 4119.843ms, rate sampling interval: 14589ms
@@ -72,6 +77,7 @@ Transfer/sec:     30.46KB
   Socket errors: connect 0, read 0, write 0, timeout 81
 Requests/sec:     91.70
 Transfer/sec:     19.25KB
+```
 
 ### deploy firm
 try to deploy everything given by firm's document
@@ -145,3 +151,5 @@ make all
 cd python-cat-mba
 make env
 ```
+
+another error shows up, it seems we haven't install `intel-cmt-cat`, which is in `firm/third-party`. I suspect that we have to install all the third parties first.
