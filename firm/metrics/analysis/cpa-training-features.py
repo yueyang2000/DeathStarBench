@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 """
 Require: Microservice execution history graph G
 Attributes: childNodes, lastReturnedChild

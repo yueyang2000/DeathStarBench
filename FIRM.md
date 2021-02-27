@@ -98,7 +98,7 @@ kubectl create -f manifests/
 
 strimzi and istio CRD needs to be install before deploying trace-grapher.
 
-install `istioctl` following the instruction of the official website.
+- install `istioctl` following the instruction of the official website.
 
 ```
 export ISTIO_VERSION=1.9.0
@@ -108,13 +108,48 @@ export PATH=$PWD/bin:$PATH
 istioctl install --set profile=demo -y
 ```
 
-install `strimzi` after download `strimzi-0.21.1.tar.gz`
+- install `strimzi`  following the quickstart guide
 
 ```
 tar -xzf strimzi-0.21.1.tar.gz
-cd strimzi-0.21.1/install
-kubectl apply -f cluster-operator/
 ```
+
+create namespace kafka and modify the deployment files
+
+```
+kubectl create ns kafka
+sed -i 's/namespace: .*/namespace: kafka/' install/cluster-operator/*RoleBinding*.yaml
+```
+
+create trace-grapher namespace
+
+```
+kubectl create trace-grapher
+```
+
+edit `install/cluster-operator/060-Deployment-strimzi-cluster-operator.yaml` and set `STRIMZI_NAMESPACE` to `trace-grapher`
+
+```
+env:
+- name: STRIMZI_NAMESPACE
+  value: trace-grapher
+```
+
+deploy CRDs
+
+```
+kubectl apply -f install/cluster-operator/ -n kafka
+```
+
+give permissions
+
+```
+kubectl apply -f install/cluster-operator/020-RoleBinding-strimzi-cluster-operator.yaml -n trace-grapher
+kubectl apply -f install/cluster-operator/032-RoleBinding-strimzi-cluster-operator-topic-operator-delegation.yaml -n trace-grapher
+kubectl apply -f install/cluster-operator/031-RoleBinding-strimzi-cluster-operator-entity-operator-delegation.yaml -n trace-grapher
+```
+
+
 
 Also, original Dockerfile is modified, we use curl to install docker-compose in the stack-buillder
 
@@ -126,7 +161,7 @@ sudo chmod +x /usr/bin/docker-compose
 
 
 
-deploy trace grapher
+- deploy trace grapher
 
 ```
 cd trace-grapher
