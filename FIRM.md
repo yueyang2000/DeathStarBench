@@ -79,7 +79,10 @@ Requests/sec:     91.70
 Transfer/sec:     19.25KB
 ```
 
+The result shows that anomaly injector indeed takes effect.
+
 ### deploy firm
+
 try to deploy everything given by firm's document
 
 ```
@@ -149,9 +152,9 @@ kubectl apply -f install/cluster-operator/032-RoleBinding-strimzi-cluster-operat
 kubectl apply -f install/cluster-operator/031-RoleBinding-strimzi-cluster-operator-entity-operator-delegation.yaml -n trace-grapher
 ```
 
+- deploy trace grapher
 
-
-Also, original Dockerfile is modified, we use curl to install docker-compose in the stack-buillder
+Original Dockerfile is modified, we use curl to install docker-compose in the stack-buillder, so we don't need `py-pip, python-dev`
 
 ```
 ## Dockerfile.deploy
@@ -159,9 +162,7 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-
 sudo chmod +x /usr/bin/docker-compose
 ```
 
-
-
-- deploy trace grapher
+run the following commands: 
 
 ```
 cd trace-grapher
@@ -172,19 +173,83 @@ make prepare-trace-grapher-namespace
 make install-components
 ```
 
-
-
-
+Now `kubectl get pods --all-namespaces` should return something like this:
 
 ```
-trace-grapher    jupyter-0                                     0/1     Pending            0          8d
-trace-grapher    kafka-connect-ui-ff8b9f5c-8w9bb               1/1     Running            0          8d
-trace-grapher    neo4j-0                                       0/1     Pending            0          8d
+NAMESPACE        NAME                                          READY   STATUS             RESTARTS   AGE
+istio-system     istio-egressgateway-65b9c8b54f-wgtx8          1/1     Running            0          53m
+istio-system     istio-ingressgateway-56d9b7fdb-5pgxf          1/1     Running            0          53m
+istio-system     istiod-89dc6db9c-j87bn                        1/1     Running            0          53m
+kafka            strimzi-cluster-operator-644bcc4d44-ht2vc     1/1     Running            6          30m
+kube-system      coredns-74ff55c5b-b8g7n                       1/1     Running            0          63m
+kube-system      coredns-74ff55c5b-n6v62                       1/1     Running            0          63m
+kube-system      etcd-autosys-4                                1/1     Running            0          63m
+kube-system      kube-apiserver-autosys-4                      1/1     Running            0          63m
+kube-system      kube-controller-manager-autosys-4             1/1     Running            0          63m
+kube-system      kube-flannel-ds-2jt9b                         1/1     Running            0          62m
+kube-system      kube-flannel-ds-nk89j                         1/1     Running            0          60m
+kube-system      kube-proxy-ms96m                              1/1     Running            0          60m
+kube-system      kube-proxy-vhd9h                              1/1     Running            0          63m
+kube-system      kube-scheduler-autosys-4                      1/1     Running            0          63m
+monitoring       alertmanager-main-0                           2/2     Running            0          54m
+monitoring       alertmanager-main-1                           2/2     Running            0          54m
+monitoring       alertmanager-main-2                           2/2     Running            0          54m
+monitoring       grafana-7f567cccfc-z2tdk                      1/1     Running            0          54m
+monitoring       kube-state-metrics-5f9c597bb9-86xrc           3/3     Running            0          54m
+monitoring       node-exporter-87hfd                           2/2     Running            0          54m
+monitoring       node-exporter-fvmd9                           2/2     Running            0          54m
+monitoring       prometheus-adapter-557648f58c-dhlb8           1/1     Running            0          54m
+monitoring       prometheus-k8s-0                              3/3     Running            1          54m
+monitoring       prometheus-k8s-1                              3/3     Running            1          54m
+monitoring       prometheus-operator-66558f76d9-cxlfk          2/2     Running            0          54m
+observability    jaeger-operator-64bc449b74-9gvbg              1/1     Running            0          55m
+social-network   compose-post-redis-8df45b9d9-k44nq            1/1     Running            0          58m
+social-network   compose-post-service-596d8d9f89-pnbfc         1/1     Running            0          58m
+social-network   home-timeline-redis-6f4c5d55fc-8lfjb          1/1     Running            0          58m
+social-network   home-timeline-service-79849956fc-l482v        1/1     Running            0          58m
+social-network   jaeger-79df655c6-fxvjb                        1/1     Running            0          58m
+social-network   media-frontend-555bf4f69b-x7mx2               1/1     Running            0          58m
+social-network   media-memcached-7d9ff5d6bb-m7m6t              1/1     Running            0          58m
+social-network   media-mongodb-5c7b85c65d-2gs8k                1/1     Running            0          58m
+social-network   media-service-dfc4b58c6-hbwcv                 1/1     Running            0          58m
+social-network   nginx-thrift-7c8f5b4479-tmpg6                 1/1     Running            0          58m
+social-network   post-storage-memcached-67b5c87bdb-44nlk       1/1     Running            0          58m
+social-network   post-storage-mongodb-695cd587f6-9ktrs         1/1     Running            0          58m
+social-network   post-storage-service-5688c98894-6wsfs         1/1     Running            0          58m
+social-network   social-graph-mongodb-84d498dc7b-6qws9         1/1     Running            0          58m
+social-network   social-graph-redis-6686bb4f78-rm7bp           1/1     Running            0          58m
+social-network   social-graph-service-7f8d4fb55-j9wmd          1/1     Running            0          58m
+social-network   text-service-59fc7bd9bb-c2cwg                 1/1     Running            0          58m
+social-network   unique-id-service-579cc5f997-pxl6s            1/1     Running            0          58m
+social-network   url-shorten-memcached-588494c4c7-rt98q        1/1     Running            0          58m
+social-network   url-shorten-mongodb-8678cd5b77-msmzs          1/1     Running            0          58m
+social-network   url-shorten-service-5dccc4c9-gbt76            1/1     Running            0          58m
+social-network   user-memcached-6b8c6fb85f-gm6pk               1/1     Running            0          58m
+social-network   user-mention-service-57b579cc79-65b7m         1/1     Running            0          58m
+social-network   user-mongodb-669f794897-zmkmb                 1/1     Running            0          58m
+social-network   user-service-5849995cf4-pltsv                 1/1     Running            0          58m
+social-network   user-timeline-mongodb-7d5c79b677-5j9l8        1/1     Running            0          58m
+social-network   user-timeline-redis-6b54b58777-vwtgt          1/1     Running            0          58m
+social-network   user-timeline-service-585fd7cf96-tjb46        1/1     Running            0          58m
+social-network   write-home-timeline-rabbitmq-fdc74669-rfrhw   1/1     Running            0          58m
+social-network   write-home-timeline-service-9c77cc4cb-tk9nb   1/1     Running            3          58m
+trace-grapher    jupyter-0                                     0/1     Pending            0          12m
+trace-grapher    kafka-connect-connect-55469c56d5-wm4g6        0/1     CrashLoopBackOff   6          8m30s
+trace-grapher    kafka-connect-ui-ff8b9f5c-5fh8x               1/1     Running            0          10m
+trace-grapher    neo4j-0                                       0/1     Pending            0          12m
 ```
 
-But I have no idea how to use this is thing...
+It seems that `kafka connect` operator is still malfunctional. A brief of the pod log:
 
-Install deployment module:
+```
+Failed to create new KafkaAdminClient
+Caused by:
+No resolvable bootstrap urls given in bootstrap.servers
+```
+
+
+
+- Install deployment module:
 
 ```
 cd scripts
@@ -193,4 +258,14 @@ cd python-cat-mba
 make env
 ```
 
-another error shows up, it seems we haven't install `intel-cmt-cat`, which is in `firm/third-party`. I suspect that we have to install all the third parties first.
+`make env` failed, the error is:
+
+```
+created virtual environment CPython3.6.9.final.0-64 in 608ms
+  creator CPython3Posix(dest=/home/yueyang/DeathStarBench/firm/scripts/python-cat-mba/env, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=/home/yueyang/.local/share/virtualenv)
+    added seed packages: pip==21.0.1, setuptools==52.0.0, wheel==0.36.2
+  activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator
+make[1]: *** ../../lib/python: No such file or directory.  Stop.
+```
+
