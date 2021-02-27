@@ -96,34 +96,9 @@ kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operato
 kubectl create -f manifests/
 ```
 
+strimzi and istio CRD needs to be install before deploying trace-grapher.
 
-
-deploy trace grapher
-```
-cd trace-grapher
-docker-compose run stack-builder
-# now a shell pops as root in the project directory of the stack-builder container
-cd deploy-trace-grapher
-make prepare-trace-grapher-namespace
-make install-components
-```
-
-ERROR shows up. remove `py-pip, python-dev`, use curl to install docker-compose
-
-```
-sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
-sudo chmod +x /usr/bin/docker-compose
-```
-
-while executing `make install component` another error shows up which seems like a bug in the deployment file.
-
-```
-unable to recognize "./overlays/docker-desktop": no matches for kind "KafkaConnect" in version "kafka.strimzi.io/v1beta1" 
-unable to recognize "./overlays/docker-desktop": no matches for kind "Gateway" in version "networking.istio.io/v1alpha3"  
-unable to recognize "./overlays/docker-desktop": no matches for kind "VirtualService" in version "networking.istio.io/v1alpha3"
-```
-
-strimzi and istio CRD needs to be download. In `trace-grapher/crd/` directory I manually download strimzi's configuration file. Then `kubectl apply -f cdn/`. Also, install `istioctl` following the instruction of the official website.
+install `istioctl` following the instruction of the official website.
 
 ```
 export ISTIO_VERSION=1.9.0
@@ -133,7 +108,38 @@ export PATH=$PWD/bin:$PATH
 istioctl install --set profile=demo -y
 ```
 
-Afterwards, `make install-components` returns no error, it seems the trace-grapher is already running.
+install `strimzi` after download `strimzi-0.21.1.tar.gz`
+
+```
+tar -xzf strimzi-0.21.1.tar.gz
+cd strimzi-0.21.1/install
+kubectl apply -f cluster-operator/
+```
+
+Also, original Dockerfile is modified, we use curl to install docker-compose in the stack-buillder
+
+```
+## Dockerfile.deploy
+sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
+sudo chmod +x /usr/bin/docker-compose
+```
+
+
+
+deploy trace grapher
+
+```
+cd trace-grapher
+docker-compose run stack-builder
+# now a shell pops as root in the project directory of the stack-builder container
+cd deploy-trace-grapher
+make prepare-trace-grapher-namespace
+make install-components
+```
+
+
+
+
 
 ```
 trace-grapher    jupyter-0                                     0/1     Pending            0          8d
