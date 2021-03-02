@@ -119,13 +119,12 @@ cd provision-k8s
 export ISTIO_VERSION=1.6.4
 make
 cd ../deploy-jaeger
+kubectl create ns monitoring-stack
 kubectl apply -k ./bases/jaeger-streaming/kafka -n monitoring-stack
 cd ../deploy-trace-grapher
 make prepare-trace-grapher-namespace
 make install-components
 ```
-
-
 
 - Install deployment module:
 
