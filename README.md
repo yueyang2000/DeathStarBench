@@ -102,15 +102,6 @@ You need at least 2 linux instances to run a k8s cluster. (one for master and on
    sudo chown $(id -u):$(id -g) $HOME/.kube/config
    ```
 
-3. (on master node) install fannel pod-network
-
-   ```bash
-   # apply pod network
-   sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-   ```
-
-   you can check if the pod-network is online by `kubectl get pods --all-namespaces`
-
 4. (on slave node) paste the `kubeadm join` command that was saved in step 2
 
    ```bash
@@ -119,6 +110,15 @@ You need at least 2 linux instances to run a k8s cluster. (one for master and on
        --discovery-token-ca-cert-hash sha256:8a2e2259e82d7b8d4022c3f8323bb4a22f8d55fce6c000f78a308ef6b304a3ad
    ```
 
+5. (on master node) install fannel pod-network
+
+   ```bash
+   # apply pod network
+   sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+   ```
+   
+you can check if the pod-network is online by `kubectl get pods --all-namespaces`
+   
 5. (on master node) Now the cluster is successfully created. You can check the status of every node by `kubectl get nodes` and you will be greeted by something like this:
 
    ```
