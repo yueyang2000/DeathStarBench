@@ -123,6 +123,7 @@ kubectl create ns monitoring-stack
 kubectl apply -k ./bases/jaeger-streaming/kafka -n monitoring-stack
 cd ../deploy-trace-grapher
 make prepare-trace-grapher-namespace
+kubectl apply -f ../storage/ -n trace-grapher
 make install-components
 ```
 
